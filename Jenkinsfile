@@ -12,9 +12,9 @@ pipeline {
                 echo 'Logging Into the Private ECR Registry'
                 script {
                     GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
-                    ACCOUNT_REGISTRY_PREFIX = "321442529690.dkr.ecr.us-west-2.amazonaws.com"
+                    ACCOUNT_REGISTRY_PREFIX = "572947063244.dkr.ecr.eu-west-2.amazonaws.com"
                     sh """
-                    \$(aws ecr get-login --no-include-email --region us-west-2)
+                    \$(aws ecr get-login --no-include-email --region eu-west-2)
                     """
                 }
             }
@@ -72,7 +72,7 @@ pipeline {
                 script {
                     productionImage.push("deploy")
                    sh """
-                       aws ec2 reboot-instances --region us-west-2 --instance-ids i-0f1a736171fc66557
+                       aws ec2 reboot-instances --region eu-west-2 --instance-ids i-0f1a736171fc66557
                     """
                 }
             }
@@ -115,7 +115,7 @@ pipeline {
             steps {
                   echo 'Testing.. Deploy to Production'
                 script {
-                    PRODUCTION_ALB_LISTENER_ARN="arn:aws:elasticloadbalancing:us-west-2:321442529690:listener/app/production-website/291d06690c5897fb/ac17ff1845610c14"
+                    PRODUCTION_ALB_LISTENER_ARN="arn:aws:elasticloadbalancing:eu-west-2:321442529690:listener/app/production-website/291d06690c5897fb/ac17ff1845610c14"
                     sh """
                     ./run-stack.sh example-webapp-production ${PRODUCTION_ALB_LISTENER_ARN}
                     """
